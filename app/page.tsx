@@ -340,8 +340,12 @@ function Header({ lang, setLang, t, cartCount, onCart }: any) {
 function Hero({ t }: any) {
   return (
     <section id="top" className="relative py-24 md:py-32 text-center text-white">
-      <img src="/images/bìa.jpg" alt="Banner" className="absolute inset-0 w-full h-full object-cover"/>
-      <div className="absolute inset-0 bg-black/60"/>
+      <img
+  src="/images/banner.jpg?v=3"
+  alt="Titanium Vietnam Banner"
+  className="absolute inset-0 w-full h-full object-cover"
+/>
+
       <Container>
         <div className="relative z-10 flex flex-col items-center">
           <img src="/images/logo trắng.jpg" alt="Logo" className="w-28 h-28 rounded-full bg-white/10 p-3 mb-6"/>
