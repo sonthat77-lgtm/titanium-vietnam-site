@@ -347,6 +347,7 @@ function Hero({ t }: any) {
 />
 
       <Container>
+ <div className="absolute inset-0 bg-black/65" /> 
         <div className="relative z-10 flex flex-col items-center">
           <img src="/images/logo trắng.jpg" alt="Logo" className="w-28 h-28 rounded-full bg-white/10 p-3 mb-6"/>
           <div className="leading-tight">
