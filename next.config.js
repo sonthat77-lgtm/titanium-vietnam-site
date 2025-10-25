@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export', // enable static export for static hosting
-};
+const nextConfig = { output: 'export' };
 module.exports = nextConfig;
+
