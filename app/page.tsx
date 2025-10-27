@@ -556,6 +556,7 @@ function About({ t, lang }: any) {
 }
 
 function Products({ t, add, lang }: any) {
+ const unit = lang === "vi" ? "phin" : "sheet";
   return (
     <section id="products" className="py-16 md:py-24">
       <Container>
@@ -582,7 +583,7 @@ function Products({ t, add, lang }: any) {
                 </ul>
                 <div className="flex items-center justify-between pt-2">
                   <div className="text-lg font-bold">
-                    {p.price.toLocaleString("vi-VN")} đ / phin
+                    {p.price.toLocaleString("vi-VN")} đ / {unit}
                   </div>
                   <Button onClick={() => add(p.id)} className="rounded-xl">
                     {lang === "vi" ? "Thêm vào giỏ" : "Add to cart"}
