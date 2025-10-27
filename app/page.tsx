@@ -476,15 +476,12 @@ function Header({ lang, setLang, t, cartCount, onCart }: any) {
 function Hero({ t }: any) {
   return (
     <section id="top" className="relative py-24 md:py-32 text-center text-white">
-      <img
-        src="/images/bìa.jpg"
-        alt="Banner"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-      <div
-        className="absolute inset-0"
-        style={{ filter: "brightness(35%)" }} 
-      />
+     <img
+  src="/images/bìa.jpg"
+  alt="Banner"
+  className="absolute inset-0 w-full h-full object-cover"
+  style={{ filter: "brightness(35%)" }}
+/>
       <Container>
         <div className="relative z-10 flex flex-col items-center">
           <img
