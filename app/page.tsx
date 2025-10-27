@@ -541,53 +541,59 @@ function Contact({ t }: any) {
     <CardTitle>{t.contact.formTitle}</CardTitle>
   </CardHeader>
   <CardContent className="space-y-3">
-   <form
+<form
   onSubmit={async (e) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
     const data = new FormData(form);
+
+    // Lấy ngôn ngữ từ input ẩn (nếu thiếu thì mặc định "vi")
     const currentLang = (data.get("language") as string) || "vi";
+
+    // Web3Forms
     data.append("access_key", "YOUR_ACCESS_KEY_HERE");
     data.append("subject", "New lead from Titanium Vietnam website");
     data.append("from_name", "Titanium Vietnam Website");
-    // ...
 
+    // Honeypot chống bot (nếu bạn có trường ẩn hp_check)
+    if ((data.get("hp_check") as string) !== "") return;
 
-        const btn = form.querySelector("button[type=submit]") as HTMLButtonElement;
-        const originText = btn.textContent;
-        btn.disabled = true;
-        btn.textContent = (t.contact.formTitle as string) + "…";
+    const btn = form.querySelector("button[type=submit]") as HTMLButtonElement;
+    const originText = btn.textContent || "Submit";
+    btn.disabled = true;
+    btn.textContent = originText + "…";
 
-        try {
-          const res = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: data,
-          }).then(r => r.json());
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: data,
+      }).then((r) => r.json());
 
-           if (res.success) {
+      if (res.success) {
+        alert(
+          currentLang === "en"
+            ? "Sent! We will contact you soon."
+            : "Gửi thành công! Chúng tôi sẽ liên hệ sớm."
+        );
+        form.reset();
+      } else {
+        alert(
+          currentLang === "en"
+            ? "Submission failed. Please try again."
+            : "Gửi thất bại, vui lòng thử lại."
+        );
+      }
+    } catch {
       alert(
-        currentLang === "en"
-          ? "Sent! We will contact you soon."
-          : "Gửi thành công! Chúng tôi sẽ liên hệ sớm."
+        currentLang === "en" ? "Network error." : "Lỗi mạng."
       );
-      form.reset();
-    } else {
-      alert(
-        currentLang === "en"
-          ? "Submission failed. Please try again."
-          : "Gửi thất bại, vui lòng thử lại."
-      );
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originText;
     }
-
-        } catch {
-          alert(lang === "en" ? "Network error." : "Lỗi mạng.");
-        } finally {
-          btn.disabled = false;
-          btn.textContent = originText || "Submit";
-        }
-      }}
-      className="space-y-3"
-    >
+  }}
+  className="space-y-3"
+>
       {/* Họ tên */}
       <Input name="name" required placeholder={t.contact.fName} />
       {/* Điện thoại/Zalo */}
