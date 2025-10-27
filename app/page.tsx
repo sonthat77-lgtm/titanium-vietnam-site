@@ -340,14 +340,9 @@ function Header({ lang, setLang, t, cartCount, onCart }: any) {
 function Hero({ t }: any) {
   return (
     <section id="top" className="relative py-24 md:py-32 text-center text-white">
-      <img
-  src="/images/banner.jpg?v=3"
-  alt="Titanium Vietnam Banner"
-  className="absolute inset-0 w-full h-full object-cover"
-/>
-
+      <img src="/images/bìa.jpg" alt="Banner" className="absolute inset-0 w-full h-full object-cover"/>
+      <div className="absolute inset-0 bg-black/60"/>
       <Container>
- <div className="absolute inset-0 bg-black/65" /> 
         <div className="relative z-10 flex flex-col items-center">
           <img src="/images/logo trắng.jpg" alt="Logo" className="w-28 h-28 rounded-full bg-white/10 p-3 mb-6"/>
           <div className="leading-tight">
@@ -541,17 +536,75 @@ function Contact({ t }: any) {
       <Container>
         <SectionTitle title={t.contact_title} subtitle={t.contact_sub}/>
         <div className="grid lg:grid-cols-2 gap-8 items-start">
-          <Card className="rounded-3xl order-2 lg:order-1">
-            <CardHeader><CardTitle>{t.send_req}</CardTitle></CardHeader>
-            <CardContent className="space-y-3">
-              <Input placeholder={t.name}/>
-              <Input placeholder={t.phone}/>
-              <Input placeholder={t.email}/>
-              <Textarea rows={4} placeholder={t.message}/>
-              <Button className="w-full rounded-xl">{t.send_req}</Button>
-              <p className="text-[11px] text-gray-500 text-center">Demo form – kết nối form service để nhận lead</p>
-            </CardContent>
-          </Card>
+         <Card className="rounded-3xl order-2 lg:order-1">
+  <CardHeader>
+    <CardTitle>{t.contact.formTitle}</CardTitle>
+  </CardHeader>
+  <CardContent className="space-y-3">
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const form = e.currentTarget as HTMLFormElement;
+        const data = new FormData(form);
+        // Web3Forms yêu cầu access_key
+        data.append("access_key", "8345c9dc-c93f-4a4a-b37e-a8694a4311af");
+        // Tuỳ chọn: tiêu đề email
+        data.append("subject", "New lead from Titanium Vietnam website");
+        // Tuỳ chọn: tên người gửi hiển thị
+        data.append("from_name", "Titanium Vietnam Website");
+        // Honeypot chống bot (trường ẩn)
+        if ((data.get("hp_check") as string) !== "") return;
+
+        const btn = form.querySelector("button[type=submit]") as HTMLButtonElement;
+        const originText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = (t.contact.formTitle as string) + "…";
+
+        try {
+          const res = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: data,
+          }).then(r => r.json());
+
+          if (res.success) {
+            alert(
+              (typeof t.cart?.codNote === "string" ? t.cart.codNote : "Sent!") +
+              (lang === "en" ? "\nWe will contact you soon." : "\nChúng tôi sẽ liên hệ sớm.")
+            );
+            form.reset();
+          } else {
+            alert(lang === "en" ? "Submission failed. Please try again." : "Gửi thất bại, vui lòng thử lại.");
+          }
+        } catch {
+          alert(lang === "en" ? "Network error." : "Lỗi mạng.");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = originText || "Submit";
+        }
+      }}
+      className="space-y-3"
+    >
+      {/* Họ tên */}
+      <Input name="name" required placeholder={t.contact.fName} />
+      {/* Điện thoại/Zalo */}
+      <Input name="phone" required placeholder={t.contact.fPhone} />
+      {/* Email (tuỳ chọn) */}
+      <Input type="email" name="email" placeholder={t.contact.fEmail} />
+      {/* Nội dung */}
+      <Textarea rows={4} name="message" placeholder={t.contact.fMsg} />
+
+      {/* Trường ẩn */}
+      <input type="hidden" name="hp_check" />
+      <input type="hidden" name="language" value={lang} />
+      <input type="hidden" name="site" value="Titanium Vietnam" />
+
+      <Button type="submit" className="w-full rounded-xl">
+        {t.contact.formTitle}
+      </Button>
+      <p className="text-[11px] text-gray-500 text-center">{t.contact.demo}</p>
+    </form>
+  </CardContent>
+</Card>
           <div className="order-1 lg:order-2 space-y-2 text-sm">
             <div><strong>Hotline/Zalo:</strong> <a className="underline" href={`tel:${PHONE_1}`}>{PHONE_1}</a> – <a className="underline" href={`tel:${PHONE_2}`}>{PHONE_2}</a></div>
             <div><strong>Email:</strong> <a className="underline" href={`mailto:${EMAIL}`}>{EMAIL}</a></div>
