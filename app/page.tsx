@@ -483,7 +483,7 @@ function Hero({ t }: any) {
       />
       <div
         className="absolute inset-0"
-        style={{ background: "rgba(0,0,0,.65)" }} // 65% darken
+        style={{ filter: "brightness(35%)" }} 
       />
       <Container>
         <div className="relative z-10 flex flex-col items-center">
