@@ -605,7 +605,7 @@ function Contact({ t }: any) {
 
       {/* Trường ẩn */}
       <input type="hidden" name="hp_check" />
-      <input type="hidden" name="language" value={lang} />
+      <input type="hidden" name="language" value={t === TEXT_EN ? "en" : "vi"} />
       <input type="hidden" name="site" value="Titanium Vietnam" />
 
       <Button type="submit" className="w-full rounded-xl">
