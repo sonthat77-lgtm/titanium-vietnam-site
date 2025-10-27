@@ -477,7 +477,7 @@ function Hero({ t }: any) {
   return (
     <section id="top" className="relative py-24 md:py-32 text-center text-white">
      <img
-  src="/images/bìa.jpg"
+  src="/images/banner.jpg"
   alt="Banner"
   className="absolute inset-0 w-full h-full object-cover"
   style={{ filter: "brightness(35%)" }}
