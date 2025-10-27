@@ -541,19 +541,17 @@ function Contact({ t }: any) {
     <CardTitle>{t.contact.formTitle}</CardTitle>
   </CardHeader>
   <CardContent className="space-y-3">
-    <form
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const form = e.currentTarget as HTMLFormElement;
-        const data = new FormData(form);
-        // Web3Forms yêu cầu access_key
-        data.append("access_key", "8345c9dc-c93f-4a4a-b37e-a8694a4311af");
-        // Tuỳ chọn: tiêu đề email
-        data.append("subject", "New lead from Titanium Vietnam website");
-        // Tuỳ chọn: tên người gửi hiển thị
-        data.append("from_name", "Titanium Vietnam Website");
-        // Honeypot chống bot (trường ẩn)
-        if ((data.get("hp_check") as string) !== "") return;
+   <form
+  onSubmit={async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const data = new FormData(form);
+    const currentLang = (data.get("language") as string) || "vi";
+    data.append("access_key", "YOUR_ACCESS_KEY_HERE");
+    data.append("subject", "New lead from Titanium Vietnam website");
+    data.append("from_name", "Titanium Vietnam Website");
+    // ...
+
 
         const btn = form.querySelector("button[type=submit]") as HTMLButtonElement;
         const originText = btn.textContent;
@@ -566,15 +564,21 @@ function Contact({ t }: any) {
             body: data,
           }).then(r => r.json());
 
-          if (res.success) {
-            alert(
-              (typeof t.cart?.codNote === "string" ? t.cart.codNote : "Sent!") +
-              (lang === "en" ? "\nWe will contact you soon." : "\nChúng tôi sẽ liên hệ sớm.")
-            );
-            form.reset();
-          } else {
-            alert(lang === "en" ? "Submission failed. Please try again." : "Gửi thất bại, vui lòng thử lại.");
-          }
+           if (res.success) {
+      alert(
+        currentLang === "en"
+          ? "Sent! We will contact you soon."
+          : "Gửi thành công! Chúng tôi sẽ liên hệ sớm."
+      );
+      form.reset();
+    } else {
+      alert(
+        currentLang === "en"
+          ? "Submission failed. Please try again."
+          : "Gửi thất bại, vui lòng thử lại."
+      );
+    }
+
         } catch {
           alert(lang === "en" ? "Network error." : "Lỗi mạng.");
         } finally {
